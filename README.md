@@ -51,7 +51,7 @@ sudo apt-get install flex
 -  In the terminal write:
   
 ```bash
- ./compiler.o << filename.cpp:
+ ./compiler.o << filename.cpp
 ```
 
     
