@@ -1,8 +1,8 @@
 
 
 <div style="display: flex; justify-content: center;">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/C%2B%2B_logo.png" alt="Image 1" style="width: 45%; margin-right: 10px;">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/The_GNU_logo.png" alt="Image 2" style="width: 45%; margin-left: 10px;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/C%2B%2B_logo.png" alt="Image 1" style="width: 30%; margin-right: 10px;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/The_GNU_logo.png" alt="Image 2" style="width: 30%; margin-left: 10px;">
 </div>
 
 
