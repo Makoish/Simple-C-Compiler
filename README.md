@@ -28,10 +28,6 @@ wget http://ftp.gnu.org/gnu/bison/bison-2.3.tar.gz
 tar -xvzf bison-2.3.tar.gz
 ```
 
--  Now, enter the directory where the download bison package is extracted.
-```bash
-./run.bash /path/to/input/file /path/to/output/directory
-```
 
 -  You also need to download flex
 ```bash
