@@ -26,7 +26,7 @@ class QUAD{
 
     public:
         QUAD();
-        void print_var_type(string fileName, int indentationLevel, string type, string var_name);
+        void print_var_type(string fileName, int indentationLevel, string type, string var_name, bool parm);
         void print_label(string fileName, int indentationLevel, string label_name);
         void print_return(string fileName, int indentationLevel, string label_name);
         void print_call_function(string fileName, FunctionTable*global_functions, string funcName, int indentationLevel, string LHS);

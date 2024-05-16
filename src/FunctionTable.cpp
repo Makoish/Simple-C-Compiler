@@ -87,7 +87,7 @@ string FunctionTable::getType(){
 
 
 
-void FunctionTable::CheckFunctionReturn(string var_type, string functionName, int yylineno, bool * print){
+void FunctionTable::CheckFunctionReturn(string var_name, string var_type, string functionName, int yylineno, bool * print, SymbolTable*curr){
     string type;
     for (int i = 0; i < FuncTables.size(); i++){
         if (functionName == FuncTables[i]->getName())
@@ -101,7 +101,8 @@ void FunctionTable::CheckFunctionReturn(string var_type, string functionName, in
         *print = false;
         cout << "Error at line " << yylineno << ": " << "function return " << type  << " variable type: " << var_type << endl; 
     }
-
+   
+    curr->initSymbol(var_name, type, yylineno, print);
     
 
 }

@@ -13,21 +13,24 @@ QUAD::QUAD(){
 
 }
 
-void QUAD::print_var_type(string fileName, int Indentation, string type, string var_name){
-    {
+void QUAD::print_var_type(string fileName, int Indentation, string type, string var_name, bool PARM=false){
+    
             ofstream outputFile(fileName, ios::app);
+            outputFile << string(Indentation, ' ');
+            if (PARM)
+                outputFile <<"PARM ";
             if (type == "int")
-                outputFile << string(Indentation, ' ') << "INTEGER " << var_name << ";" << endl;
+                outputFile << "INTEGER " << var_name << ";" << endl;
             else{
                 for (char &c : type) {
                     c = std::toupper(c); 
                 }
-                outputFile << string(Indentation, ' ') << type << " " << var_name << ";" << endl;
+                outputFile << type << " " << var_name << ";" << endl;
     
             }
 
             outputFile.close();
-        }
+        
 }
 
 
@@ -99,7 +102,7 @@ void QUAD::print_for_label(string fileName, int Indentation){
 
 void QUAD::print_assign_Quadruples(string fileName, string REGISTER, string LHS, int Indentation, SymbolTable*curr){
     ofstream outputFile(fileName, ios::app);
-    outputFile << string(Indentation, ' ') << "SET " <<  LHS << " =: " <<  REGISTER << endl;
+    outputFile << string(Indentation, ' ') << "SET " << REGISTER << ", " <<  LHS << endl;
     curr->get_variable_to_reg().push_back(make_pair(LHS, REGISTER));
     outputFile.close();
     
@@ -108,7 +111,7 @@ void QUAD::print_assign_Quadruples(string fileName, string REGISTER, string LHS,
 
 string QUAD::printOperation(string fileName, string REG1, string REG2, int Indentation, string OPERATION){
     ofstream outputFile(fileName, ios::app);
-    outputFile << string(Indentation, ' ') << "SET R" <<  LAST_REG_NUM << " =: " <<  REG1 << " " << OPERATION <<" "<< REG2  << endl;
+    outputFile << string(Indentation, ' ') << OPERATION << " " <<  REG1 << ", " <<  REG2 << ", R" << LAST_REG_NUM << endl;
     outputFile.close();
     LAST_REG_NUM+=1;
     return "R" + to_string(LAST_REG_NUM-1);
@@ -118,10 +121,8 @@ string QUAD::printOperation(string fileName, string REG1, string REG2, int Inden
 
 string QUAD::printSingleOperation(string fileName, string REG1, int Indentation, string OPERATION){
     ofstream outputFile(fileName, ios::app);
-    if (OPERATION == "NEG")
-        outputFile << string(Indentation, ' ') << "SET R" <<  LAST_REG_NUM << " =: -" <<  REG1 << endl;
-    else
-        outputFile << string(Indentation, ' ') << "SET R" <<  LAST_REG_NUM << " =: " <<  REG1 << OPERATION  << endl;
+
+    outputFile << string(Indentation, ' ') << OPERATION <<" " <<  REG1 << ", R"<< LAST_REG_NUM  << endl;
     outputFile.close();
     LAST_REG_NUM+=1;
     return "R" + to_string(LAST_REG_NUM-1);
@@ -129,14 +130,14 @@ string QUAD::printSingleOperation(string fileName, string REG1, int Indentation,
 }
 void QUAD::printPostLoop(string fileName, string REG, string OPERATION, int Indentation){
     ofstream outputFile(fileName, ios::app);
-    outputFile << string(Indentation, ' ') << "SET " <<  REG << " =: " <<  REG << OPERATION << endl;
+    outputFile << string(Indentation, ' ') << OPERATION << " " <<  REG << ", "  << "1, " <<  REG  << endl;
     outputFile.close();
 }
 
 
 string QUAD::print_Cond_Operation(string fileName, string REG1, string REG2, int Indentation, string OPERATION){
     ofstream outputFile(fileName, ios::app);
-    outputFile << string(Indentation, ' ') << "SET R" <<  LAST_REG_NUM << " =: " << OPERATION << " " << REG1 << ", " << REG2  << endl;
+    outputFile << string(Indentation, ' ') << OPERATION << " " <<  REG1 << ", " << REG2 << ", R" << LAST_REG_NUM << endl;
     outputFile.close();
     LAST_REG_NUM+=1;
     return "R" + to_string(LAST_REG_NUM-1);
@@ -147,7 +148,7 @@ string QUAD::print_Cond_Operation(string fileName, string REG1, string REG2, int
 void QUAD::printJMP(string fileName, string jmp_type, string REGISTER, int Indentation){
     ofstream outputFile(fileName, ios::app);
     string LABEL = LOOP_LABELS.top();
-    outputFile << string(Indentation, ' ') << "JMP " <<  jmp_type << " " << REGISTER << " " << LABEL << endl;
+    outputFile << string(Indentation, ' ') << "JMP " <<  jmp_type << ", " << REGISTER << ", " << LABEL << endl;
     outputFile.close();
    
 }
@@ -157,7 +158,7 @@ int QUAD::addIFLabels(string fileName, int Indentation, string REGISTER){
 
     LAST_LABEL_NUM+=1;
     ofstream outputFile(fileName, ios::app);
-    outputFile << string(Indentation, ' ') << "JMP NZ " << REGISTER << ", " << "IF_LABEL_" << LAST_LABEL_NUM <<  endl;
+    outputFile << string(Indentation, ' ') << "JMP nz, " << REGISTER << ", " << "IF_LABEL_" << LAST_LABEL_NUM <<  endl;
     LAST_LABEL_NUM+=1;
     else_labels.push(LAST_LABEL_NUM);
     outputFile << string(Indentation, ' ') << "JUMP " << REGISTER << ", " << "ELSE_LABEL_" << LAST_LABEL_NUM <<  endl;
@@ -172,7 +173,7 @@ int QUAD::addElseIFLabels(string fileName, int Indentation, string REGISTER){
 
     LAST_LABEL_NUM+=1;
     ofstream outputFile(fileName, ios::app);
-    outputFile << string(Indentation, ' ') << "JMP NZ " << REGISTER << ", " << "IF_LABEL_" << LAST_LABEL_NUM <<  endl;
+    outputFile << string(Indentation, ' ') << "JMP nz, " << REGISTER << ", " << "IF_LABEL_" << LAST_LABEL_NUM <<  endl;
     int label = else_labels.top();
     outputFile << string(Indentation, ' ') << "JUMP " << REGISTER << ", " << "ELSE_LABEL_" << label <<  endl;
     outputFile << string(Indentation, ' ') << "IF_LABEL_" << LAST_LABEL_NUM << ": "<< endl;
@@ -286,7 +287,7 @@ string QUAD::print_CASE_Cond_Operation(string fileName, string REGISTER, int ind
 void QUAD::printPRECASE(string fileName, string REG, int indentation){
 
     ofstream outputFile(fileName, ios::app);
-    outputFile << string(indentation, ' ') << "JUMP NZ " <<  REG << " CASE:" <<LAST_LABEL_NUM << endl;
+    outputFile << string(indentation, ' ') << "JUMP nz, " <<  REG << " CASE:" <<LAST_LABEL_NUM << endl;
     outputFile << string(indentation, ' ') << "JUMP " << "OUT_CASE_" << LAST_LABEL_NUM << endl;
     STACK_OF_CASES.push( "OUT_CASE_" + to_string(LAST_LABEL_NUM));
     LAST_LABEL_NUM+=1;

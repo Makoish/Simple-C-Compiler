@@ -1,0 +1,20 @@
+LABEL: test
+     PARM INTEGER m;
+     PLUS m, 1, R0
+     SET R0, m
+RETURN 0
+
+
+
+
+LABEL: main
+     INTEGER m;
+     SET 0, m
+     INTEGER x;
+     PARM m
+     call test, 1, x
+RETURN 
+
+
+
+

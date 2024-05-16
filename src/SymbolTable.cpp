@@ -226,10 +226,10 @@ void SymbolTable::checkSingleOperation(string first, int yylineno,  bool *print,
 
 }
 
-void SymbolTable::checkInit(string name, bool *print, int lineno){
+void SymbolTable::checkInit(string name, bool *print, int lineno, bool func_scope = false){
     
     bool init = getinitbyName(name);
-    if (!init && *print){
+    if (!init && *print && !func_scope){
         *print = false;
         cout << "Error at line: " << lineno << " variable: " << name << " is uninitialized" << endl;
     }

@@ -29,7 +29,7 @@ class FunctionTable: public SymbolTable {
         void validateCallParm(string Name, string type, int CallOrder, int lineno, bool * print);
         void setFunctionType(string type);
         string getType();
-        void CheckFunctionReturn(string var_type, string functionName, int yylineno, bool * print);
+        void CheckFunctionReturn(string var_name, string var_type, string functionName, int yylineno, bool * print, SymbolTable*);
 
 
         

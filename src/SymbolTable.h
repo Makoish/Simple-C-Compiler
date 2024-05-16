@@ -42,7 +42,7 @@ public:
     void printTable(int &indentationLevel);
     void checkOperation(string first, string second, int yylineno, bool *print, string OPR);
     void checkSingleOperation(string first, int yylineno,  bool *print, string OPR);
-    void checkInit(string, bool*, int);
+    void checkInit(string, bool*, int, bool funcScope);
     string checkDef(string, int, bool*);
     string getTableName();
     void setName(string);
